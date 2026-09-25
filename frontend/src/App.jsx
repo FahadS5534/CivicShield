@@ -18,10 +18,11 @@ export default function App() {
   const [summaryStats, setSummaryStats] = useState(null);
   const [staffUser, setStaffUser] = useState({ email: "admin@nashikkumbh.gov.in", role: "admin" });
   const [isDecisionsOpen, setIsDecisionsOpen] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   useEffect(() => {
     fetchInitialData();
-  }, []);
+  }, [refreshTrigger]);
 
   const fetchInitialData = async () => {
     try {
@@ -44,11 +45,14 @@ export default function App() {
       setCitizenTab('report');
     } else if (role === 'admin') {
       setAdminTab('queue');
+      // Trigger instant refresh when admin enters
+      setRefreshTrigger(prev => prev + 1);
     }
   };
 
   const handleComplaintSubmitted = () => {
-    fetchInitialData();
+    // Increment refresh trigger so all dashboards & admin queues update immediately
+    setRefreshTrigger(prev => prev + 1);
   };
 
   return (
@@ -99,6 +103,7 @@ export default function App() {
               zones={zones}
               workers={workers}
               staffUser={staffUser}
+              refreshTrigger={refreshTrigger}
             />
           ) : (
             <TransparencyDashboard

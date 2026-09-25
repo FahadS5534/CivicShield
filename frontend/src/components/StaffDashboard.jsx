@@ -4,7 +4,7 @@ import axios from 'axios';
 import IncidentMap from './IncidentMap';
 import WorkerCardSelector from './WorkerCardSelector';
 
-export default function StaffDashboard({ zones, workers, staffUser }) {
+export default function StaffDashboard({ zones, workers, staffUser, refreshTrigger }) {
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedStatus, setSelectedStatus] = useState("all");
@@ -16,12 +16,21 @@ export default function StaffDashboard({ zones, workers, staffUser }) {
   const [isAssigning, setIsAssigning] = useState(false);
   const [showMap, setShowMap] = useState(true);
 
+  // Fetch complaints whenever filters or global refreshTrigger change
   useEffect(() => {
     fetchComplaints();
+  }, [selectedStatus, selectedZone, minPriority, refreshTrigger]);
+
+  // Real-time silent polling every 4 seconds so admin side stays synchronized
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchComplaints(true); // silent fetch without showing full loading spinner
+    }, 4000);
+    return () => clearInterval(interval);
   }, [selectedStatus, selectedZone, minPriority]);
 
-  const fetchComplaints = async () => {
-    setLoading(true);
+  const fetchComplaints = async (isSilent = false) => {
+    if (!isSilent) setLoading(true);
     try {
       let url = `/api/complaints?priority_min=${minPriority}`;
       if (selectedStatus !== "all") url += `&status=${selectedStatus}`;
@@ -32,7 +41,7 @@ export default function StaffDashboard({ zones, workers, staffUser }) {
     } catch (err) {
       console.error("Error fetching admin queue:", err);
     } finally {
-      setLoading(false);
+      if (!isSilent) setLoading(false);
     }
   };
 
@@ -97,7 +106,7 @@ export default function StaffDashboard({ zones, workers, staffUser }) {
               </span>
             </div>
             <p className="text-xs text-brand-stone mt-1">
-              Official dispatch control room: Rule-based Priority Queue ($0 - 100$) + Field Worker Assignment + Map Tracking
+              Official dispatch control room: Rule-based Priority Queue ($0 - 100$) + Field Worker Assignment + Real-Time Sync
             </p>
           </div>
 
@@ -111,7 +120,7 @@ export default function StaffDashboard({ zones, workers, staffUser }) {
               {showMap ? "Hide Map View" : "Show Map View"}
             </button>
             <button
-              onClick={fetchComplaints}
+              onClick={() => fetchComplaints(false)}
               className="p-1.5 rounded-xl border border-brand-border bg-white text-brand-stone hover:text-brand-dark hover:bg-brand-muted"
               title="Refresh Queue"
             >
@@ -221,6 +230,12 @@ export default function StaffDashboard({ zones, workers, staffUser }) {
                         <span className="text-[11px] font-medium text-brand-dark bg-brand-linen px-2 py-0.5 rounded-md border border-brand-border">
                           {c.department}
                         </span>
+
+                        {!c.is_synthetic && (
+                          <span className="text-[10px] bg-brand-emerald-light text-brand-emerald font-bold px-2 py-0.5 rounded-md border border-brand-emerald/30">
+                            LIVE Citizen Report
+                          </span>
+                        )}
 
                         {c.duplicate_count > 1 && (
                           <span className="text-[10px] text-brand-terracotta font-bold bg-brand-terracotta/10 px-2 py-0.5 rounded-md border border-brand-terracotta/20 flex items-center space-x-1">

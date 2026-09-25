@@ -6,7 +6,6 @@ from app.models import Zone, Worker, Complaint, ComplaintEvent
 from app.classifier import classifier_instance
 from app.priority import calculate_priority_score
 
-# Nashik-Trimbakeshwar Simhastha Kumbh Mela 2027 Sectors & Coordinates
 SECTORS_DATA = [
     {"name": "Sector 1 (Ramkund Bathing Ghat)", "sector_code": "SEC-01", "lat": 19.9985, "lng": 73.7925},
     {"name": "Sector 2 (Tapovan Sadhugram Camp)", "sector_code": "SEC-02", "lat": 19.9930, "lng": 73.8050},
@@ -56,14 +55,7 @@ SEED_COMPLAINT_TEMPLATES = [
     ("Drain blocked near Sector 6 Gauri Patangan food stalls dirty water logging", 19.9962, 73.7962),
     ("Kachre ka dher near Kapaleshwar Temple gate Sector 7 bin overfilled", 19.9992, 73.7917),
     ("Toilet complex 3 overflow leakage Sector 8 Ahilyabai Holkar Bridge side", 20.0012, 73.7902),
-    ("Water supply stopped in tap stand Sector 9 Tapovan Sadhugram Sector 2", 19.9912, 73.8082),
-    ("Choked nala near Nilgiri Baug Bus Stand Sector 10 sewage flooding walkway", 19.9882, 73.8152),
-    ("Broken handwash basin spraying muddy water Sector 11 VVIP Tent City Godavari", 19.9952, 73.8002),
-    ("Bio toilet overflow in Sector 12 Trimbak Road Entry Hub pilgrims complaining", 19.9652, 73.7502),
-    ("Drinking water kiosk dry Sector 13 Nashik Control Room Panchavati side", 19.9977, 73.7907),
-    ("Trash bin full with paper plates and tea cups Sector 14 Food Plaza Gangapur Road", 20.0052, 73.7752),
-    ("Handwashing unit tap missing Sector 15 Pilgrim Shelter Nashik Road Station", 19.9552, 73.8302),
-    ("Nala jam problem near Brahmagiri Foothills Trimbak Sector 16", 19.9302, 73.5252)
+    ("Water supply stopped in tap stand Sector 9 Tapovan Sadhugram Sector 2", 19.9912, 73.8082)
 ]
 
 def seed_database(db: Session):
@@ -89,29 +81,28 @@ def seed_database(db: Session):
         workers_list.append(w)
     db.commit()
 
-    # 3. Seed Complaints (~180 records over past 48 hours)
+    # 3. Seed Exactly 10 Complaints (Clean demo dataset)
     now = datetime.utcnow()
-    statuses_weights = ["resolved"] * 50 + ["in_progress"] * 25 + ["assigned"] * 15 + ["reported"] * 10
-    
-    for i in range(180):
-        tmpl_text, default_lat, default_lng = random.choice(SEED_COMPLAINT_TEMPLATES)
-        z_obj = random.choice(SECTORS_DATA)
+    statuses_pattern = ["reported", "reported", "reported", "assigned", "assigned", "in_progress", "in_progress", "resolved", "reported", "assigned"]
+
+    for i in range(10):
+        tmpl_text, default_lat, default_lng = SEED_COMPLAINT_TEMPLATES[i % len(SEED_COMPLAINT_TEMPLATES)]
+        z_obj = SECTORS_DATA[i % len(SECTORS_DATA)]
         zone_name = z_obj["name"]
         
-        lat = z_obj["lat"] + random.uniform(-0.003, 0.003)
-        lng = z_obj["lng"] + random.uniform(-0.003, 0.003)
+        lat = z_obj["lat"] + random.uniform(-0.002, 0.002)
+        lng = z_obj["lng"] + random.uniform(-0.002, 0.002)
 
-        prefixes = ["Emergency: ", "Please fix: ", "Urgent issue - ", "Help needed - ", "Report: "]
-        raw_text = random.choice(prefixes) + tmpl_text
+        raw_text = "Report: " + tmpl_text
 
         cls_result = classifier_instance.predict(raw_text)
         category = cls_result["category"]
         department = cls_result["department"]
 
-        created_minutes_ago = random.randint(15, 2880)
+        created_minutes_ago = (10 - i) * 20
         created_at = now - timedelta(minutes=created_minutes_ago)
 
-        status = random.choice(statuses_weights)
+        status = statuses_pattern[i]
         assigned_at = None
         resolved_at = None
         assigned_worker_id = None
@@ -120,12 +111,11 @@ def seed_database(db: Session):
         worker = matching_workers[0] if matching_workers else random.choice(workers_list)
 
         if status in ["assigned", "in_progress", "resolved"]:
-            assigned_at = created_at + timedelta(minutes=random.randint(5, 45))
+            assigned_at = created_at + timedelta(minutes=5)
             assigned_worker_id = worker.id
 
         if status == "resolved":
-            resolution_duration_mins = random.randint(20, 180)
-            resolved_at = (assigned_at or created_at) + timedelta(minutes=resolution_duration_mins)
+            resolved_at = assigned_at + timedelta(minutes=45)
 
         priority_score = calculate_priority_score(category, created_at, zone_name, db)
 
@@ -138,7 +128,7 @@ def seed_database(db: Session):
             status=status,
             photo_url=None,
             is_synthetic=True,
-            duplicate_count=random.choice([1, 1, 1, 2, 3]),
+            duplicate_count=1,
             is_duplicate=False,
             created_at=created_at,
             assigned_at=assigned_at,
@@ -171,7 +161,7 @@ def seed_database(db: Session):
             ev3 = ComplaintEvent(
                 complaint_id=complaint.id,
                 event_type="STATUS_CHANGED",
-                timestamp=assigned_at + timedelta(minutes=10) if assigned_at else created_at + timedelta(minutes=10),
+                timestamp=assigned_at + timedelta(minutes=10),
                 details=f"Status set to 'in_progress'. Worker dispatched on location."
             )
             db.add(ev3)
@@ -186,4 +176,4 @@ def seed_database(db: Session):
             db.add(ev4)
 
     db.commit()
-    print(f"Successfully seeded 16 Nashik sectors, {len(workers_list)} workers, and 180 synthetic complaints with events!")
+    print(f"Successfully seeded 16 Nashik sectors, {len(workers_list)} workers, and EXACTLY 10 synthetic complaints with events!")

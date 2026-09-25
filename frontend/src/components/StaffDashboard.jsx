@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Filter, AlertTriangle, Clock, CheckCircle2, UserPlus, MapPin, ChevronRight, Eye, RefreshCw, Sparkles, FileCheck, Layers } from 'lucide-react';
+import { Shield, Filter, AlertTriangle, Clock, CheckCircle2, UserPlus, MapPin, ChevronRight, Eye, RefreshCw, Sparkles, FileCheck, Layers, RotateCcw } from 'lucide-react';
 import axios from 'axios';
 import IncidentMap from './IncidentMap';
 import WorkerCardSelector from './WorkerCardSelector';
@@ -7,6 +7,7 @@ import WorkerCardSelector from './WorkerCardSelector';
 export default function StaffDashboard({ zones, workers, staffUser, refreshTrigger }) {
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isReseeding, setIsReseeding] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [selectedZone, setSelectedZone] = useState("all");
   const [minPriority, setMinPriority] = useState(0);
@@ -16,15 +17,13 @@ export default function StaffDashboard({ zones, workers, staffUser, refreshTrigg
   const [isAssigning, setIsAssigning] = useState(false);
   const [showMap, setShowMap] = useState(true);
 
-  // Fetch complaints whenever filters or global refreshTrigger change
   useEffect(() => {
     fetchComplaints();
   }, [selectedStatus, selectedZone, minPriority, refreshTrigger]);
 
-  // Real-time silent polling every 4 seconds so admin side stays synchronized
   useEffect(() => {
     const interval = setInterval(() => {
-      fetchComplaints(true); // silent fetch without showing full loading spinner
+      fetchComplaints(true);
     }, 4000);
     return () => clearInterval(interval);
   }, [selectedStatus, selectedZone, minPriority]);
@@ -42,6 +41,22 @@ export default function StaffDashboard({ zones, workers, staffUser, refreshTrigg
       console.error("Error fetching admin queue:", err);
     } finally {
       if (!isSilent) setLoading(false);
+    }
+  };
+
+  const handleReseedDatabase = async () => {
+    if (!window.confirm("Reset dataset to 10 clean demo complaints?")) return;
+    setIsReseeding(true);
+    try {
+      await axios.post('/api/seed');
+      setSelectedComplaint(null);
+      await fetchComplaints(false);
+      alert("Database reset to 10 clean demo complaints!");
+    } catch (err) {
+      console.error("Error resetting database:", err);
+      alert("Failed to reset database.");
+    } finally {
+      setIsReseeding(false);
     }
   };
 
@@ -111,6 +126,16 @@ export default function StaffDashboard({ zones, workers, staffUser, refreshTrigg
           </div>
 
           <div className="flex items-center space-x-2">
+            <button
+              onClick={handleReseedDatabase}
+              disabled={isReseeding}
+              className="px-3 py-1.5 rounded-xl text-xs font-bold bg-brand-amber/15 text-brand-amber hover:bg-brand-amber/25 border border-brand-amber/30 flex items-center space-x-1 transition-all"
+              title="Reset local DB to 10 fresh demo complaints"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>{isReseeding ? "Resetting..." : "Reset to 10 Demo Complaints"}</span>
+            </button>
+
             <button
               onClick={() => setShowMap(!showMap)}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all ${

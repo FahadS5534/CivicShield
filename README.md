@@ -1,4 +1,4 @@
-# Maha-Track AI — Civic Sanitation Response & Transparency System (Nashik Kumbh Mela 2027)
+# Civic Shield — Civic Sanitation Response & Transparency System (Nashik Kumbh Mela 2027)
 
 [![Docker Supported](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker&logoColor=white)](#-docker-deployment)
 [![Python FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi&logoColor=white)](#-technology-stack)
@@ -9,7 +9,7 @@
 
 ## 📌 Project Overview
 
-**Maha-Track AI** is a civic sanitation complaint reporting, dispatch management, and public transparency system designed for high-density public events, centered on **Nashik Simhastha Kumbh Mela 2027** across Nashik and Trimbakeshwar.
+**Civic Shield** is a civic sanitation complaint reporting, dispatch management, and public transparency system designed for high-density public events, centered on **Nashik Simhastha Kumbh Mela 2027** across Nashik and Trimbakeshwar.
 
 ### 🎯 Motivation Context
 During large congregation events along sacred river banks (such as Godavari River in Nashik), inadequate toilet facilities, water shortages, and waste accumulation create critical public health challenges. **Maha-Track AI** bridges the gap between field citizens and government event administrators with an end-to-end operational loop:

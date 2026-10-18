@@ -4,17 +4,50 @@
 [![Python FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi&logoColor=white)](#-technology-stack)
 [![React + Tailwind](https://img.shields.io/badge/Frontend-React%20%7C%20TailwindCSS-61DAFB?logo=react&logoColor=white)](#-technology-stack)
 [![ML Accuracy](https://img.shields.io/badge/ML%20Accuracy-96.00%25-2D6A4F)](#-bambaiyahinglish-ml-classifier)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
 ## 📌 Project Overview
 
-**BMC-Track AI** is a municipal civic grievance reporting, intelligent dispatch management, and public transparency system built for the **Brihanmumbai Municipal Corporation (BMC / MCGM)** across all **19 Administrative Wards** of Mumbai (from Ward A Colaba in South Mumbai to Ward T Mulund & Ward R/North Dahisar in the Northern Suburbs).
+**BMC-Track AI** is an intelligent municipal civic grievance reporting, automated triage, and public transparency platform built for the **Brihanmumbai Municipal Corporation (BMC / MCGM)** across all **19 Administrative Wards** of Mumbai.
 
 ### 🎯 Motivation Context
 In a megacity like Mumbai with over 13 million residents, urban hazards such as monsoon waterlogging, hazardous potholes on arterial roads, water pipeline bursts, sanitation choke-ups, and overflowing waste bins require rapid intervention. **BMC-Track AI** bridges the gap between Mumbaikars and BMC Ward Control Rooms with an end-to-end operational loop:
 
 $$\text{Citizens Report} \longrightarrow \text{BMC Wards Dispatch} \longrightarrow \text{Performance is Measurable}$$
+
+---
+
+## 🏗️ System Architecture
+
+```mermaid
+graph TD
+    subgraph Citizens ["🏙️ Citizen Portal (<30s)"]
+        A[Bambaiya / Marathi / Hinglish Input] --> B[TF-IDF Real-Time Auto-Classifier]
+        B --> C[Duplicate Auto-Detection Engine]
+        C --> D[GPS Ward Geolocation Pin]
+    end
+
+    subgraph Backend ["⚡ FastAPI Core & Storage"]
+        D --> E[Priority Scoring Engine: 0-100]
+        E --> F[(SQLite Database)]
+        F --> G[Event Audit Logger: MTTR tracking]
+    end
+
+    subgraph Admin ["🛡️ BMC Ward Control Room"]
+        F --> H[Dynamic Priority Queue]
+        H --> I[Mumbai GIS Leaflet Incident Map]
+        H --> J[Worker Card Selector & Dispatch]
+        J --> K[Lifecycle: Reported -> Assigned -> In Progress -> Resolved]
+    end
+
+    subgraph Public ["📊 Transparency Portal"]
+        G --> L[Public Performance Dashboard]
+        L --> M[Mean Time To Resolution: MTTR by Dept]
+        L --> N[Ward Resolution Index: 19 Wards]
+    end
+```
 
 ---
 
@@ -81,6 +114,32 @@ $$\text{Priority Score} = \min\left(100,\, \text{SeverityWeight} + \text{Pending
 
 ---
 
+## 📍 19 BMC Administrative Wards Covered
+
+| Zone | Ward Code | Ward Name & Coverage |
+|---|---|---|
+| South Mumbai | `WARD-A` | Ward A (Colaba, Fort & Marine Drive) |
+| South Mumbai | `WARD-C` | Ward C (Bhuleshwar & Marine Lines) |
+| South Mumbai | `WARD-D` | Ward D (Malabar Hill & Grant Road) |
+| South Central | `WARD-E` | Ward E (Byculla & Mazgaon) |
+| South Central | `WARD-F-SOUTH` | Ward F/South (Parel & Sewri) |
+| South Central | `WARD-F-NORTH` | Ward F/North (Matunga, Sion & Wadala) |
+| South Central | `WARD-G-SOUTH` | Ward G/South (Worli & Lower Parel) |
+| Central Mumbai | `WARD-G-NORTH` | Ward G/North (Dadar, Mahim & Dharavi) |
+| Western Suburbs | `WARD-H-WEST` | Ward H/West (Bandra West & Khar) |
+| Western Suburbs | `WARD-H-EAST` | Ward H/East (Bandra East & Santacruz East) |
+| Western Suburbs | `WARD-K-WEST` | Ward K/West (Andheri West, Juhu & Versova) |
+| Western Suburbs | `WARD-K-EAST` | Ward K/East (Andheri East, Saki Naka & Marol) |
+| Western Suburbs | `WARD-P-SOUTH` | Ward P/South (Goregaon) |
+| Western Suburbs | `WARD-P-NORTH` | Ward P/North (Malad) |
+| Western Suburbs | `WARD-R-SOUTH` | Ward R/South (Kandivali) |
+| Western Suburbs | `WARD-R-CENTRAL` | Ward R/Central (Borivali) |
+| Eastern Suburbs | `WARD-L` | Ward L (Kurla & Sakinaka Link) |
+| Eastern Suburbs | `WARD-N` | Ward N (Ghatkopar & Vidyavihar) |
+| Eastern Suburbs | `WARD-T` | Ward T (Mulund & Nahur) |
+
+---
+
 ## 🔐 Default Credentials (BMC Ward Control)
 
 | Role | Email | Password |
@@ -97,6 +156,11 @@ Run the complete application (Frontend + Backend + SQLite + Demo Dataset) using 
 
 ```bash
 docker compose up --build
+```
+
+To stop containers:
+```bash
+docker compose down
 ```
 
 - **Web Application**: [http://localhost:3000](http://localhost:3000)

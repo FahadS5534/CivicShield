@@ -16,7 +16,7 @@ export default function DecisionLogModal({ isOpen, onClose }) {
             </div>
             <div>
               <h2 className="font-extrabold text-brand-dark text-lg">System Decision Log (`DECISIONS.md`)</h2>
-              <p className="text-xs text-brand-stone">Technical trade-offs, priority logic, and explicit architectural choices (Nashik Simhastha 2027)</p>
+              <p className="text-xs text-brand-stone">Technical trade-offs, priority logic, and explicit architectural choices (Brihanmumbai Municipal Corporation / BMC)</p>
             </div>
           </div>
           <button
@@ -37,10 +37,10 @@ export default function DecisionLogModal({ isOpen, onClose }) {
               <span>1. Rule-Based Priority Scoring Formula (Not ML)</span>
             </div>
             <p className="text-brand-dark">
-              <strong>Decided:</strong> Use a transparent weighted rule formula ($0 - 100$) combining Category Severity (40%), Time Pending (30%), and Local Zone Cluster Density (30%).
+              <strong>Decided:</strong> Use a transparent weighted rule formula ($0 - 100$) combining Category Severity (40%), Time Pending (30%), and Local Ward Cluster Density (30%).
             </p>
             <p className="text-brand-stone italic">
-              <strong>Why:</strong> Machine learning for priority scoring was explicitly rejected. There is insufficient historical ground-truth priority data. A transparent formula is auditable and defensible to event judges and administrators.
+              <strong>Why:</strong> Machine learning for priority scoring was explicitly rejected. There is insufficient historical ground-truth priority data. A transparent formula is auditable and defensible to municipal commissioners and citizens.
             </p>
           </div>
 
@@ -51,10 +51,10 @@ export default function DecisionLogModal({ isOpen, onClose }) {
               <span>2. Hinglish & Marathi ML Classifier (TF-IDF + Logistic Regression)</span>
             </div>
             <p className="text-brand-dark">
-              <strong>Decided:</strong> `scikit-learn` `TfidfVectorizer` + `LogisticRegression` pipeline trained on a realistic dataset of Hinglish & English complaints across 5 sanitation categories in Nashik & Trimbakeshwar.
+              <strong>Decided:</strong> `scikit-learn` `TfidfVectorizer` + `LogisticRegression` pipeline trained on a realistic dataset of Bambaiya Hindi, Marathi, & English complaints across 5 BMC civic categories in Mumbai.
             </p>
             <p className="text-brand-stone italic">
-              <strong>Why:</strong> Real public complaints during events like Nashik Simhastha are typed in conversational mixed Hindi-English. Light TF-IDF classifies in &lt;5ms with zero GPU required.
+              <strong>Why:</strong> Real public complaints across Mumbai are typed in conversational mixed Bambaiya Hindi-English. Light TF-IDF classifies in &lt;5ms with zero GPU required.
             </p>
           </div>
 
@@ -68,7 +68,7 @@ export default function DecisionLogModal({ isOpen, onClose }) {
               <strong>Decided:</strong> Add `is_synthetic` as a real database boolean column on `complaints` and `workers` tables, defaulting to `true` for baseline seed data.
             </p>
             <p className="text-brand-stone italic">
-              <strong>Why:</strong> Flagging synthetic data directly in the database allows the public dashboard to honestly disclose demo data lineage for Nashik Kumbh Mela 2027.
+              <strong>Why:</strong> Flagging synthetic data directly in the database allows the public dashboard to honestly disclose demo data lineage for BMC Mumbai across its 19 administrative wards.
             </p>
           </div>
 

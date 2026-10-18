@@ -29,11 +29,11 @@ export default function TransparencyDashboard({ syntheticPercentage, classifierM
   };
 
   const DEPT_COLORS = {
-    "Sanitation Dept": "#C85A32",
-    "Water Supply Dept": "#D97706",
-    "Drainage & Sewage Dept": "#1F2923",
-    "Solid Waste Management": "#2D6A4F",
-    "Public Health Dept": "#8B5CF6"
+    "Roads & Traffic Dept": "#C85A32",
+    "Stormwater Drains (SWD) Dept": "#D97706",
+    "Hydraulic Engineer (Water Supply)": "#1F2923",
+    "Public Health & Sanitation Dept": "#2D6A4F",
+    "Solid Waste Management (SWM) Dept": "#8B5CF6"
   };
 
   const CATEGORY_COLORS = ["#C85A32", "#D97706", "#2D6A4F", "#1F2923", "#991B1B"];
@@ -41,7 +41,7 @@ export default function TransparencyDashboard({ syntheticPercentage, classifierM
   if (loading) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-12 text-center text-xs text-brand-stone">
-        Loading public resolution stats & zone analytics...
+        Loading public resolution stats & ward analytics...
       </div>
     );
   }
@@ -63,11 +63,11 @@ export default function TransparencyDashboard({ syntheticPercentage, classifierM
             <div className="flex items-center space-x-2">
               <BarChart3 className="w-5 h-5 text-brand-amber" />
               <h1 className="text-2xl font-extrabold text-brand-dark tracking-tight">
-                Public Sanitation Transparency Portal
+                Public Civic Grievance & Transparency Portal
               </h1>
             </div>
             <p className="text-xs sm:text-sm text-brand-stone mt-1 max-w-2xl">
-              Real-time aggregate performance tracking across Nashik & Trimbakeshwar Kumbh Mela 2027 zones.
+              Real-time aggregate performance tracking across all 19 Brihanmumbai Municipal Corporation (BMC) Administrative Wards.
               <strong className="text-brand-dark ml-1">Citizens Report → Government Acts → Performance is Measurable.</strong>
             </p>
           </div>
@@ -187,8 +187,8 @@ export default function TransparencyDashboard({ syntheticPercentage, classifierM
         <div className="bg-white rounded-2xl p-6 border border-brand-border shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-bold text-brand-dark text-base">Sanitation Complaint Category Breakdown</h3>
-              <p className="text-xs text-brand-stone">Distribution across detected sanitation issue types</p>
+              <h3 className="font-bold text-brand-dark text-base">BMC Municipal Complaint Category Breakdown</h3>
+              <p className="text-xs text-brand-stone">Distribution across detected Mumbai civic issue types</p>
             </div>
           </div>
 
@@ -227,8 +227,8 @@ export default function TransparencyDashboard({ syntheticPercentage, classifierM
       <div className="bg-white rounded-2xl p-6 border border-brand-border shadow-xs space-y-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
           <div>
-            <h3 className="font-bold text-brand-dark text-base">Sector & Zone Performance Index</h3>
-            <p className="text-xs text-brand-stone">Aggregate resolution statistics across all 16 Nashik & Trimbakeshwar sectors</p>
+            <h3 className="font-bold text-brand-dark text-base">BMC Administrative Ward Performance Index</h3>
+            <p className="text-xs text-brand-stone">Aggregate resolution statistics across all 19 BMC Administrative Wards (Colaba to Mulund/Dahisar)</p>
           </div>
         </div>
 
@@ -236,7 +236,7 @@ export default function TransparencyDashboard({ syntheticPercentage, classifierM
           <table className="w-full text-left text-xs border-collapse">
             <thead>
               <tr className="border-b border-brand-border bg-brand-linen/60 text-brand-stone font-bold uppercase tracking-wider text-[10px]">
-                <th className="py-2.5 px-3">Zone / Sector</th>
+                <th className="py-2.5 px-3">BMC Ward</th>
                 <th className="py-2.5 px-3">Total Reported</th>
                 <th className="py-2.5 px-3">Resolved</th>
                 <th className="py-2.5 px-3">Resolution Rate</th>

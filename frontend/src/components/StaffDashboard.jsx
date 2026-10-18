@@ -114,14 +114,14 @@ export default function StaffDashboard({ zones, workers, staffUser, refreshTrigg
             <div className="flex items-center space-x-2">
               <Shield className="w-6 h-6 text-brand-emerald" />
               <h2 className="text-xl sm:text-2xl font-extrabold text-brand-dark tracking-tight">
-                Admin Complaint Management System
+                BMC Ward Control Room — Complaint Dispatch
               </h2>
               <span className="bg-brand-emerald-light text-brand-emerald text-xs font-bold px-2.5 py-0.5 rounded-full border border-brand-emerald/20">
                 {complaints.length} Active Complaints
               </span>
             </div>
             <p className="text-xs text-brand-stone mt-1">
-              Official dispatch control room: Rule-based Priority Queue ($0 - 100$) + Field Worker Assignment + Real-Time Sync
+              Official BMC dispatch control room: Rule-based Priority Queue ($0 - 100$) + Field Worker Assignment + Real-Time Sync across 19 Mumbai Administrative Wards
             </p>
           </div>
 
@@ -172,13 +172,13 @@ export default function StaffDashboard({ zones, workers, staffUser, refreshTrigg
           </div>
 
           <div>
-            <label className="block text-[11px] font-bold text-brand-stone uppercase mb-1">Zone / Sector</label>
+            <label className="block text-[11px] font-bold text-brand-stone uppercase mb-1">BMC Ward / Zone</label>
             <select
               value={selectedZone}
               onChange={(e) => setSelectedZone(e.target.value)}
               className="w-full px-3 py-1.5 text-xs rounded-xl border border-brand-border bg-brand-linen/40 focus:outline-none focus:ring-1 focus:ring-brand-emerald font-medium"
             >
-              <option value="all">All Zones / Sectors</option>
+              <option value="all">All 19 BMC Wards</option>
               {zones && zones.map(z => (
                 <option key={z.id} value={z.name}>{z.name}</option>
               ))}
@@ -216,7 +216,7 @@ export default function StaffDashboard({ zones, workers, staffUser, refreshTrigg
         <div className={`space-y-3 ${selectedComplaint ? 'lg:col-span-7' : 'lg:col-span-12'}`}>
           {loading ? (
             <div className="bg-white rounded-2xl p-8 text-center text-xs text-brand-stone border border-brand-border">
-              Loading admin complaint queue...
+              Loading BMC ward complaint queue...
             </div>
           ) : complaints.length === 0 ? (
             <div className="bg-white rounded-2xl p-8 text-center text-xs text-brand-stone border border-brand-border space-y-2">
@@ -258,7 +258,7 @@ export default function StaffDashboard({ zones, workers, staffUser, refreshTrigg
 
                         {!c.is_synthetic && (
                           <span className="text-[10px] bg-brand-emerald-light text-brand-emerald font-bold px-2 py-0.5 rounded-md border border-brand-emerald/30">
-                            LIVE Citizen Report
+                            LIVE Mumbaikar Report
                           </span>
                         )}
 

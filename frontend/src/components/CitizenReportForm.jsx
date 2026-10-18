@@ -4,20 +4,27 @@ import axios from 'axios';
 
 export default function CitizenReportForm({ zones, onComplaintSubmitted }) {
   const [rawText, setRawText] = useState("");
-  const [selectedZone, setSelectedZone] = useState("Sector 1 (Ramkund Bathing Ghat)");
+  const [selectedZone, setSelectedZone] = useState("Ward A (Colaba, Fort & Marine Drive)");
   const [photoPreview, setPhotoPreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [classification, setClassification] = useState(null);
   const [submittedResult, setSubmittedResult] = useState(null);
-  const [locationCoords, setLocationCoords] = useState({ lat: 19.9985, lng: 73.7925 });
+  const [locationCoords, setLocationCoords] = useState({ lat: 18.9220, lng: 72.8347 });
   const [isClassifying, setIsClassifying] = useState(false);
 
+  useEffect(() => {
+    if (zones && zones.length > 0 && !zones.some(z => z.name === selectedZone)) {
+      setSelectedZone(zones[0].name);
+      setLocationCoords({ lat: zones[0].lat, lng: zones[0].lng });
+    }
+  }, [zones]);
+
   const QUICK_TEMPLATES = [
-    "Sector 1 Ramkund Bathing Ghat mein toilet overflow ho raha hai gandi badboo hai",
-    "Sector 4 Trimbakeshwar Kushavart Kund tap water stopped no drinking water",
-    "Sector 2 Tapovan Sadhugram side open drain choked with garbage",
-    "Sector 3 Kalaram Temple main dustbin completely full plastic waste everywhere",
-    "Sector 5 Panchavati Ghat handwash station tap is broken spraying water"
+    "Colaba Causeway ke paas bada pothole hai bikes gir rahe hain please repair immediately",
+    "Hindmata Dadar TT circle underpass is heavily waterlogged road blocked in rain",
+    "Mahim West near station public toilet choked overflow ho raha hai smell aa rahi hai",
+    "Bandra Bandstand dump yard dustbin overflowing dogs and crows spreading garbage everywhere",
+    "Andheri East Saki Naka main pipeline burst tap water completely stopped"
   ];
 
   useEffect(() => {
@@ -101,13 +108,13 @@ export default function CitizenReportForm({ zones, onComplaintSubmitted }) {
       <div className="text-center mb-8">
         <div className="inline-flex items-center space-x-2 bg-brand-terracotta/10 text-brand-terracotta px-3 py-1 rounded-full text-xs font-bold border border-brand-terracotta/20 mb-3">
           <Sparkles className="w-3.5 h-3.5" />
-          <span>Rapid Citizen Sanitation Reporting (&lt; 30 Seconds)</span>
+          <span>Rapid Mumbaikar Civic Grievance Reporting (&lt; 30 Seconds)</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
-          Report a Sanitation Issue
+          Report a Mumbai Civic Grievance
         </h1>
         <p className="text-xs sm:text-sm text-brand-stone mt-2 max-w-lg mx-auto">
-          Notice overflowing toilets, dry taps, blocked drains, or uncollected garbage in Nashik / Trimbakeshwar? Type in Marathi, Hindi, Hinglish, or English.
+          Potholes, monsoon waterlogging, dry taps / pipe bursts, choked toilets, or uncollected garbage across Mumbai? Type in Bambaiya Hindi, Marathi, Hinglish, or English.
         </p>
       </div>
 
@@ -123,7 +130,7 @@ export default function CitizenReportForm({ zones, onComplaintSubmitted }) {
               <span className="text-xs font-bold text-brand-amber uppercase tracking-wider bg-brand-amber-light px-2.5 py-1 rounded-full border border-brand-amber/30">
                 Already Reported Issue Flagged
               </span>
-              <h3 className="text-xl font-bold text-brand-dark mt-2">This Sanitation Issue Was Already Reported!</h3>
+              <h3 className="text-xl font-bold text-brand-dark mt-2">This Civic Issue Was Already Reported!</h3>
               <p className="text-xs text-brand-stone mt-1">
                 An active ticket <span className="font-mono font-semibold text-brand-dark">#{submittedResult.id.substring(0, 10)}</span> already exists for <strong className="capitalize">{submittedResult.category.replace('_', ' ')}</strong> in {submittedResult.zone}.
               </p>
@@ -147,7 +154,7 @@ export default function CitizenReportForm({ zones, onComplaintSubmitted }) {
             </div>
 
             <p className="text-xs text-brand-dark bg-brand-linen p-3 rounded-xl border border-brand-border italic">
-              ✨ Your report has been merged into the existing ticket and its priority score was automatically boosted to ensure faster government field action!
+              ✨ Your report has been merged into the existing ticket and its priority score was automatically boosted to ensure faster BMC field action!
             </p>
 
             <button
@@ -166,7 +173,7 @@ export default function CitizenReportForm({ zones, onComplaintSubmitted }) {
             </div>
 
             <div>
-              <h3 className="text-xl font-bold text-brand-dark">Sanitation Report Registered!</h3>
+              <h3 className="text-xl font-bold text-brand-dark">Civic Grievance Registered!</h3>
               <p className="text-xs text-brand-stone mt-1">Ticket ID: <span className="font-mono font-semibold text-brand-dark">{submittedResult.id}</span></p>
             </div>
 
@@ -192,7 +199,7 @@ export default function CitizenReportForm({ zones, onComplaintSubmitted }) {
             </div>
 
             <p className="text-xs text-brand-stone italic">
-              This issue has been placed directly into the Government Staff Queue and assigned a priority score based on severity and local density.
+              This issue has been placed directly into the BMC Ward Staff Queue and assigned a priority score based on severity, traffic density, and monsoon hazard.
             </p>
 
             <button
@@ -211,7 +218,7 @@ export default function CitizenReportForm({ zones, onComplaintSubmitted }) {
           {/* Quick Preset Buttons */}
           <div>
             <label className="block text-xs font-semibold text-brand-stone mb-2">
-              Quick One-Tap Examples (Nashik Locations):
+              Quick One-Tap Examples (Mumbai Wards):
             </label>
             <div className="flex flex-wrap gap-1.5">
               {QUICK_TEMPLATES.map((tmpl, idx) => (
@@ -243,7 +250,7 @@ export default function CitizenReportForm({ zones, onComplaintSubmitted }) {
               rows={3}
               value={rawText}
               onChange={(e) => setRawText(e.target.value)}
-              placeholder="e.g. Ramkund Panchavati mein toilet bahut kharab hai overflow ho raha hai..."
+              placeholder="e.g. Dadar TT Circle underpass mein paani bhar gaya hai gaadiyaan phas rahi hain..."
               className="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-brand-border focus:outline-none focus:ring-2 focus:ring-brand-terracotta bg-brand-linen/30 font-sans"
               required
             />
@@ -269,7 +276,7 @@ export default function CitizenReportForm({ zones, onComplaintSubmitted }) {
           {/* Zone Location Selector */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-brand-dark mb-1.5">Select Sector / Zone *</label>
+              <label className="block text-xs font-bold text-brand-dark mb-1.5">Select BMC Ward / Zone *</label>
               <div className="relative">
                 <select
                   value={selectedZone}
@@ -281,7 +288,7 @@ export default function CitizenReportForm({ zones, onComplaintSubmitted }) {
                       <option key={z.id} value={z.name}>{z.name} ({z.sector_code})</option>
                     ))
                   ) : (
-                    <option value="Sector 1 (Ramkund Bathing Ghat)">Sector 1 (Ramkund Bathing Ghat)</option>
+                    <option value="Ward A (Colaba, Fort & Marine Drive)">Ward A (Colaba, Fort & Marine Drive)</option>
                   )}
                 </select>
                 <MapPin className="w-4 h-4 text-brand-terracotta absolute right-3 top-3 pointer-events-none" />
@@ -334,11 +341,11 @@ export default function CitizenReportForm({ zones, onComplaintSubmitted }) {
             className="w-full py-3.5 px-4 rounded-xl text-xs sm:text-sm font-bold bg-brand-terracotta hover:bg-brand-terracotta-hover text-white transition-all flex items-center justify-center space-x-2 shadow-sm disabled:opacity-50"
           >
             {isSubmitting ? (
-              <span>Submitting Report...</span>
+              <span>Submitting Grievance...</span>
             ) : (
               <>
                 <Send className="w-4 h-4" />
-                <span>Submit Sanitation Complaint</span>
+                <span>Submit Civic Grievance</span>
               </>
             )}
           </button>

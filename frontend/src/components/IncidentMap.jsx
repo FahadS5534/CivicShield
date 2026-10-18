@@ -40,14 +40,14 @@ function ChangeMapView({ center }) {
 }
 
 export default function IncidentMap({ complaints, selectedComplaint, onSelectComplaint }) {
-  // Default map center: Ramkund, Godavari River, Panchavati, Nashik (19.9985, 73.7925)
-  const defaultCenter = [19.9985, 73.7925];
+  // Default map center: BMC Headquarters / Mumbai (19.0760, 72.8777)
+  const defaultCenter = [19.0760, 72.8777];
 
   return (
     <div className="w-full h-[420px] rounded-2xl overflow-hidden border border-brand-border shadow-xs relative bg-white">
       <MapContainer
         center={defaultCenter}
-        zoom={13}
+        zoom={11}
         scrollWheelZoom={true}
         style={{ height: '100%', width: '100%' }}
       >
@@ -111,7 +111,7 @@ export default function IncidentMap({ complaints, selectedComplaint, onSelectCom
 
       {/* Map Legend overlay */}
       <div className="absolute bottom-3 left-3 z-10 bg-white/95 backdrop-blur-xs p-2.5 rounded-xl border border-brand-border shadow-xs text-[11px] space-y-1">
-        <div className="font-bold text-brand-dark mb-1">Nashik Kumbh Priority Legend</div>
+        <div className="font-bold text-brand-dark mb-1">BMC Mumbai Priority Legend</div>
         <div className="flex items-center space-x-2">
           <span className="w-2.5 h-2.5 rounded-full bg-red-700 inline-block"></span>
           <span className="text-brand-stone">High Priority (75+)</span>

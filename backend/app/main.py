@@ -17,9 +17,9 @@ from app.auth import create_access_token, verify_token, STAFF_CREDENTIALS
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title="Maha-Track AI Backend",
-    description="Civic Sanitation Response & Transparency API for Nashik Simhastha Kumbh Mela 2027",
-    version="1.1.0"
+    title="BMC-Track AI Backend",
+    description="Brihanmumbai Municipal Corporation (BMC) Civic Grievance & Response System API",
+    version="2.0.0"
 )
 
 app.add_middleware(
@@ -309,7 +309,13 @@ def get_response_time_stats(db: Session = Depends(get_db)):
             resolved_complaints=res_cnt
         ))
 
-    departments = ["Sanitation Dept", "Water Supply Dept", "Drainage & Sewage Dept", "Solid Waste Management", "Public Health Dept"]
+    departments = [
+        "Roads & Traffic Dept",
+        "Stormwater Drains (SWD) Dept",
+        "Hydraulic Engineer (Water Supply)",
+        "Public Health & Sanitation Dept",
+        "Solid Waste Management (SWM) Dept"
+    ]
     by_dept_res = []
 
     for d in departments:
@@ -362,7 +368,13 @@ def get_summary_stats(db: Session = Depends(get_db)):
         z_resolved = db.query(Complaint).filter(Complaint.zone == z.name, Complaint.status == "resolved").count()
         by_zone[z.name] = {"total": z_count, "resolved": z_resolved}
 
-    cats = ["toilet_overflow", "no_water", "blocked_drain", "waste_bin_full", "broken_handwashing"]
+    cats = [
+        "pothole_road_damage",
+        "waterlogging_blocked_drain",
+        "no_water_pipeline_leak",
+        "toilet_sanitation_choke",
+        "garbage_overflow"
+    ]
     by_category = {}
     for c in cats:
         c_count = db.query(Complaint).filter(Complaint.category == c).count()

@@ -15,7 +15,7 @@ export default function SyntheticDataBanner({ syntheticPercentage, classifierMet
               {syntheticPercentage ? `${syntheticPercentage}% of records are synthetic demo data.` : 'All baseline demo records tagged with is_synthetic=true.'}
             </span>
             <span className="hidden md:inline text-brand-stone ml-1">
-              (Motivated by sanitation research for Nashik Simhastha Kumbh Mela 2027 along Godavari River banks).
+              (Motivated by municipal grievance management for the Brihanmumbai Municipal Corporation across Mumbai's 19 administrative wards).
             </span>
           </div>
         </div>

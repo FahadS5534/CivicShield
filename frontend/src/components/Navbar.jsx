@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Shield, Users, BarChart3, FileText, CheckCircle2, AlertTriangle, LogIn, LogOut, ArrowLeft, LayoutGrid } from 'lucide-react';
+import { Shield, Users, BarChart3, FileText, CheckCircle2, AlertTriangle, LogIn, LogOut, ArrowLeft, Building2 } from 'lucide-react';
 
 export default function Navbar({ activePortal, setActivePortal, citizenTab, setCitizenTab, adminTab, setAdminTab, onOpenDecisions, staffUser, setStaffUser }) {
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [loginEmail, setLoginEmail] = useState("admin@nashikkumbh.gov.in");
+  const [loginEmail, setLoginEmail] = useState("admin@mcgm.gov.in");
   const [loginPass, setLoginPass] = useState("admin123");
   const [loginErr, setLoginErr] = useState("");
 
@@ -39,18 +39,18 @@ export default function Navbar({ activePortal, setActivePortal, citizenTab, setC
               </button>
             )}
 
-            <div className="w-9 h-9 rounded-xl bg-brand-terracotta/10 border border-brand-terracotta/20 flex items-center justify-center text-brand-terracotta font-bold text-lg shadow-2xs">
-              M
+            <div className="w-9 h-9 rounded-xl bg-brand-terracotta/10 border border-brand-terracotta/20 flex items-center justify-center text-brand-terracotta font-extrabold text-sm shadow-2xs">
+              BMC
             </div>
             
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-extrabold text-base sm:text-lg tracking-tight text-brand-dark">Maha-Track AI</span>
+                <span className="font-extrabold text-base sm:text-lg tracking-tight text-brand-dark">BMC-Track AI</span>
                 <span className="bg-brand-amber/15 text-brand-amber text-[10px] font-bold px-2 py-0.5 rounded-full border border-brand-amber/30 uppercase">
-                  {activePortal === 'admin' ? 'Admin Portal' : activePortal === 'citizen' ? 'Citizen App' : 'Nashik Kumbh 2027'}
+                  {activePortal === 'admin' ? 'Ward Control Room' : activePortal === 'citizen' ? 'Mumbaikar Portal' : 'Mumbai MCGM'}
                 </span>
               </div>
-              <p className="text-[11px] text-brand-stone font-medium hidden sm:block">Civic Sanitation Response & Transparency System</p>
+              <p className="text-[11px] text-brand-stone font-medium hidden sm:block">Brihanmumbai Municipal Corporation • Civic Response System</p>
             </div>
           </div>
 
@@ -66,7 +66,7 @@ export default function Navbar({ activePortal, setActivePortal, citizenTab, setC
                 }`}
               >
                 <Users className="w-3.5 h-3.5 text-brand-terracotta" />
-                <span>Submit Complaint</span>
+                <span>Submit Grievance</span>
               </button>
 
               <button
@@ -78,7 +78,7 @@ export default function Navbar({ activePortal, setActivePortal, citizenTab, setC
                 }`}
               >
                 <BarChart3 className="w-3.5 h-3.5 text-brand-amber" />
-                <span>Public Transparency Stats</span>
+                <span>Ward Transparency Stats</span>
               </button>
             </nav>
           )}
@@ -94,7 +94,7 @@ export default function Navbar({ activePortal, setActivePortal, citizenTab, setC
                 }`}
               >
                 <Shield className="w-3.5 h-3.5 text-brand-emerald" />
-                <span>Admin Queue</span>
+                <span>Ward Queue</span>
               </button>
 
               <button
@@ -106,7 +106,7 @@ export default function Navbar({ activePortal, setActivePortal, citizenTab, setC
                 }`}
               >
                 <BarChart3 className="w-3.5 h-3.5 text-brand-amber" />
-                <span>Public Analytics</span>
+                <span>City Analytics</span>
               </button>
             </nav>
           )}
@@ -143,7 +143,7 @@ export default function Navbar({ activePortal, setActivePortal, citizenTab, setC
                   className="flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-emerald text-white hover:bg-emerald-800 transition-all shadow-2xs"
                 >
                   <LogIn className="w-3.5 h-3.5" />
-                  <span>Admin Login</span>
+                  <span>Ward Login</span>
                 </button>
               )
             )}
@@ -159,7 +159,7 @@ export default function Navbar({ activePortal, setActivePortal, citizenTab, setC
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
                 <Shield className="w-5 h-5 text-brand-emerald" />
-                <h3 className="font-bold text-brand-dark text-base">Admin Control Room Login</h3>
+                <h3 className="font-bold text-brand-dark text-base">BMC Ward Control Room Login</h3>
               </div>
               <button
                 onClick={() => setShowLoginModal(false)}
@@ -170,12 +170,12 @@ export default function Navbar({ activePortal, setActivePortal, citizenTab, setC
             </div>
             
             <p className="text-xs text-brand-stone mb-4">
-              Sign in to manage complaints, assign workers, and update resolution lifecycle.
+              Sign in with your BMC / MCGM official credentials to manage ward complaints, dispatch crews, and update resolution lifecycle.
             </p>
 
             <form onSubmit={handleLogin} className="space-y-3">
               <div>
-                <label className="block text-xs font-semibold text-brand-dark mb-1">Admin Email</label>
+                <label className="block text-xs font-semibold text-brand-dark mb-1">BMC Official Email</label>
                 <input
                   type="email"
                   value={loginEmail}
